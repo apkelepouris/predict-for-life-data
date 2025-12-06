@@ -2,7 +2,9 @@ import csv, json, datetime
 
 INPUT_CSV = "set_for_life.csv"
 OUTPUT_JSON = "set_for_life_history.json"
-VERSION = 20251127  # <-- bump this whenever you regenerate
+
+# Use today's date as YYYYMMDD automatically
+VERSION = int(datetime.date.today().strftime("%Y%m%d"))
 
 rows = []
 
