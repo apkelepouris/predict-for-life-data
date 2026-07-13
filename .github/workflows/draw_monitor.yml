@@ -1,0 +1,42 @@
+name: Predict For Life - Draw Monitor
+
+on:
+
+  # Allows us to run it manually
+  workflow_dispatch:
+
+  # Automatic schedule (UTC time)
+  schedule:
+    - cron: "*/15 18-20 * * 1,4"
+    - cron: "0 */6 * * 0,2,3,5,6"
+
+jobs:
+
+  monitor:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify Python
+        run: python --version
+
+      - name: List repository files
+        run: ls -R
+
+      - name: Automation heartbeat
+        run: |
+          echo "=================================="
+          echo "Predict For Life"
+          echo "Automation is running correctly."
+          echo "UTC Time:"
+          date -u
+          echo "=================================="
