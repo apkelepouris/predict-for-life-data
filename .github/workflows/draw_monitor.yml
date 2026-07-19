@@ -10,6 +10,9 @@ on:
     - cron: "*/15 18-20 * * 1,4"
     - cron: "0 */6 * * 0,2,3,5,6"
 
+permissions:
+  contents: write
+
 jobs:
 
   monitor:
@@ -33,12 +36,12 @@ jobs:
 
       - name: Run automation
         run: |
-          python -m automation.main test_database.csv
+          python -m automation.main automation/tests/data/test_database.csv
 
       - name: Check for database changes
         id: changes
         run: |
-          if git diff --quiet set_for_life.csv; then
+          if git diff --quiet automation/tests/data/test_database.csv; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -53,8 +56,8 @@ jobs:
       - name: Commit updated database
         if: steps.changes.outputs.changed == 'true'
         run: |
-          git add set_for_life.csv
-          git commit -m "Update Set For Life database"
+          git add automation/tests/data/test_database.csv
+          git commit -m "Update test database"
 
       - name: Push changes
         if: steps.changes.outputs.changed == 'true'
