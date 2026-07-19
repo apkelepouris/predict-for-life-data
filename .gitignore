@@ -15,8 +15,5 @@ venv/
 # Windows
 Thumbs.db
 
-# Test data
-test_database.csv
-
 # Logs
 automation/logs/

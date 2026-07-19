@@ -7,7 +7,7 @@ from automation.core.automation_runner import (
 )
 
 runner = AutomationRunner(
-    database_path="test_database.csv",
+    database_path="automation/tests/data/test_database.csv",
 )
 
 result = runner.run()
