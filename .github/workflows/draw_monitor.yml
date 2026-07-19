@@ -26,17 +26,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Verify Python
-        run: python --version
-
-      - name: List repository files
-        run: ls -R
-
-      - name: Automation heartbeat
+      - name: Install dependencies
         run: |
-          echo "=================================="
-          echo "Predict For Life"
-          echo "Automation is running correctly."
-          echo "UTC Time:"
-          date -u
-          echo "=================================="
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Run automation
+        run: |
+          python -m automation.main
