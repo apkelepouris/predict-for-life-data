@@ -35,7 +35,10 @@ class AutomationRunner:
     Coordinates one complete automation run.
     """
 
-    def __init__(self) -> None:
+    def __init__(
+    self,
+    database_path: str = "set_for_life.csv",
+) -> None:
 
         self.sources = [
             OfficialNationalLotterySource(),
@@ -48,11 +51,11 @@ class AutomationRunner:
         self.database_validator = DatabaseValidator()
 
         self.database_repository = DatabaseRepository(
-            "set_for_life.csv",
+            database_path,
         )
 
         self.database_writer = DatabaseWriter(
-            "set_for_life.csv",
+            database_path,
         )
 
     def run(self):

@@ -35,9 +35,11 @@ class DatabaseRepository:
             encoding="utf-8",
         ) as csv_file:
 
-            rows = list(
-                csv.DictReader(csv_file)
-            )
+            rows = [
+                row
+                for row in csv.DictReader(csv_file)
+                if row["Date"].strip()
+            ]
 
         last_row = rows[-1]
 
