@@ -33,7 +33,7 @@ jobs:
 
       - name: Run automation
         run: |
-          python -m automation.main
+          python -m automation.main test_database.csv
 
       - name: Check for database changes
         id: changes
