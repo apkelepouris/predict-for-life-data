@@ -27,6 +27,25 @@ class MonitoringState:
         Load the monitoring state.
         """
 
+        if not self.STATE_FILE.exists():
+
+            self.STATE_FILE.parent.mkdir(
+                parents=True,
+                exist_ok=True,
+            )
+
+            self.save(
+                {
+                    "draw_date": None,
+                    "awaiting_final_source": False,
+                    "pending_source": None,
+                    "database_update_email_sent": False,
+                    "third_source_warning_sent": False,
+                    "third_source_confirmation_sent": False,
+                    "validation_timeout_sent": False,
+                }
+            )
+
         with self.STATE_FILE.open(
             "r",
             encoding="utf-8",
