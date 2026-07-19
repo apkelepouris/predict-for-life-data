@@ -51,6 +51,7 @@ class ValidationEngine:
             return ValidationResult(
                 action=ValidationAction.NO_NEW_DRAW,
                 validated_draw=None,
+                awaiting_final_source=False,
                 matching_results=[],
                 mismatched_results=[],
                 failed_results=failed_results,
@@ -87,6 +88,7 @@ class ValidationEngine:
             return ValidationResult(
                 action=ValidationAction.CONTINUE_MONITORING,
                 validated_draw=None,
+                awaiting_final_source=False,
                 matching_results=[],
                 mismatched_results=mismatched_results,
                 failed_results=failed_results,
@@ -96,6 +98,11 @@ class ValidationEngine:
                     "Continue monitoring for additional sources."
                 ),
             )
+
+        awaiting_final_source = (
+            len(successful_results) == 2
+            and len(failed_results) == 1
+        )
 
         if has_majority:
 
@@ -108,12 +115,14 @@ class ValidationEngine:
                 mismatched_results=[],
                 failed_results=failed_results,
                 database_matches=False,
+                awaiting_final_source=awaiting_final_source,
                 message="Majority validation succeeded.",
             )
 
         return ValidationResult(
             action=ValidationAction.CONTINUE_MONITORING,
             validated_draw=None,
+            awaiting_final_source=False,
             matching_results=largest_group,
             mismatched_results=mismatched_results,
             failed_results=failed_results,

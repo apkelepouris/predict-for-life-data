@@ -24,6 +24,8 @@ class ValidationResult:
 
     validated_draw: Draw | None
 
+    awaiting_final_source: bool
+
     matching_results: list[SourceResult]
 
     mismatched_results: list[SourceResult]
