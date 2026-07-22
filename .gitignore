@@ -20,4 +20,3 @@ automation/logs/
 
 # Runtime state
 automation/reports/latest_report.txt
-automation/state/monitoring_state.json

@@ -1,0 +1,9 @@
+{
+    "draw_date": null,
+    "awaiting_final_source": false,
+    "pending_source": null,
+    "database_update_email_sent": false,
+    "third_source_warning_sent": false,
+    "third_source_confirmation_sent": false,
+    "validation_timeout_sent": false
+}
