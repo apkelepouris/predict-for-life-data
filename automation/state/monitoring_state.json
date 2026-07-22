@@ -4,6 +4,6 @@
     "pending_source": null,
     "database_update_email_sent": false,
     "third_source_warning_sent": false,
-    "third_source_confirmation_sent": false,
+    "third_source_confirmation_sent": true,
     "validation_timeout_sent": false
 }
