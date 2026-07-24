@@ -32,11 +32,34 @@ class DatabaseWriter:
         Append a validated draw to the database.
         """
 
+        needs_newline = False
+
+        if (
+            self.database_path.exists()
+            and self.database_path.stat().st_size > 0
+        ):
+
+            with self.database_path.open(
+                mode="rb",
+            ) as binary_file:
+
+                binary_file.seek(-1, 2)
+
+                last_byte = binary_file.read(1)
+
+                needs_newline = (
+                    last_byte not in (b"\n", b"\r")
+                )
+
         with self.database_path.open(
             mode="a",
             newline="",
             encoding="utf-8",
         ) as csv_file:
+
+            if needs_newline:
+
+                csv_file.write("\n")
 
             writer = csv.writer(csv_file)
 

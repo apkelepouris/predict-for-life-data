@@ -5,17 +5,30 @@ on:
   # Allows us to run it manually
   workflow_dispatch:
 
-  # Automatic schedule (UTC time)
+  # Automatic schedule
   schedule:
-    # Mondays & Thursdays
-    # Wake every 5 minutes.
-    # ScheduleGuard decides whether the automation
-    # should actually run.
-    - cron: "*/5 18-21 * * 1,4"
 
-    # Heartbeat
-    # One run at 12:00 UTC on non-draw days
-    - cron: "0 12 * * 0,2,3,5,6"
+    # Mondays & Thursdays
+    # Multiple irregular launch opportunities.
+    # The first successful run starts the
+    # long-running Python monitor.
+    - cron: "43,53 19 * * 1,4"
+      timezone: "Europe/London"
+
+    - cron: "3,13 20 * * 1,4"
+      timezone: "Europe/London"
+
+    # Late draw-day recovery safety net.
+    - cron: "13 23 * * 1,4"
+      timezone: "Europe/London"
+
+    # Heartbeat on non-draw days.
+    - cron: "14 12 * * 0,2,3,5,6"
+      timezone: "Europe/London"
+
+concurrency:
+  group: predict-for-life-draw-monitor
+  cancel-in-progress: false
 
 permissions:
   contents: write

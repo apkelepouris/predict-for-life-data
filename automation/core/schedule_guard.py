@@ -20,7 +20,7 @@ class ScheduleGuard:
     DRAW_DAYS = {0, 3}  # Monday, Thursday
     HEARTBEAT_DAYS = {1, 2, 4, 5, 6}  # Tue, Wed, Fri, Sat, Sun
 
-    DRAW_START = time(19, 50)
+    DRAW_START = time(19, 43)
     DRAW_END = time(21, 30)
 
     HEARTBEAT_TIME = time(12, 0)
@@ -57,6 +57,34 @@ class ScheduleGuard:
             return True
 
         return False
+
+    def is_draw_day(
+        self,
+    ) -> bool:
+        """
+        Return True if today is a draw day
+        in London.
+        """
+
+        return self._is_draw_day(
+            self._current_london_datetime()
+        )
+
+    def is_active_monitoring_time(
+        self,
+    ) -> bool:
+        """
+        Return True if the current London
+        time is inside the active draw
+        monitoring window.
+        """
+
+        now = self._current_london_datetime()
+
+        return (
+            self._is_draw_day(now)
+            and self._is_within_draw_window(now)
+        )
 
     def _current_london_datetime(self) -> datetime:
         """
@@ -107,20 +135,20 @@ class ScheduleGuard:
         return (
             self.DRAW_START
             <= current_time
-            <= self.DRAW_END
+            < self.DRAW_END
         )
     
     def monitoring_window_closed(
         self,
     ) -> bool:
         """
-        Return True if the monitoring window
-        has ended.
+        Return True if the active monitoring
+        window has ended on a draw day.
         """
 
         now = self._current_london_datetime()
 
-        return now.hour > 21 or (
-            now.hour == 21
-            and now.minute >= 30
+        return (
+            self._is_draw_day(now)
+            and now.time() >= self.DRAW_END
         )

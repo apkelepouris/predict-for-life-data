@@ -1,3 +1,5 @@
+import shutil
+
 from datetime import date, datetime
 
 from automation.core.automation_runner import AutomationRunner
@@ -51,15 +53,59 @@ class FakeLotteryStatsSource:
             error_message="Simulated timeout",
         )
 
+class FakeScheduleGuard:
 
-runner = AutomationRunner(
-    sources=[
-        FakeOfficialSource(),
-        FakeNationalLotteryComSource(),
-        FakeLotteryStatsSource(),
-    ],
-)
+    def is_active_monitoring_time(self):
+        return False
 
-result = runner.run()
+    def monitoring_window_closed(self):
+        return True
 
-print(result)
+
+class FakeNotifier:
+
+    def send(self, subject, body):
+        print()
+        print("FAKE EMAIL")
+        print(f"Subject: {subject}")
+        print(f"Body: {body}")
+
+def test_validation_timeout(tmp_path):
+
+    database_path = (
+        tmp_path / "test_database.csv"
+    )
+
+    shutil.copy(
+        "automation/tests/data/test_database.csv",
+        database_path,
+    )
+
+    state_path = (
+        tmp_path / "monitoring_state.json"
+    )
+
+    runner = AutomationRunner(
+        database_path=database_path,
+        sources=[
+            FakeOfficialSource(),
+            FakeNationalLotteryComSource(),
+            FakeLotteryStatsSource(),
+        ],
+        monitoring_state_path=state_path,
+    )
+
+    runner.ONE_SOURCE_POLL_SECONDS = 0
+
+    runner.schedule_guard = FakeScheduleGuard()
+
+    runner.notifier = FakeNotifier()
+
+    result = runner.run()
+
+    assert result is not None
+
+    assert (
+        result.action.name
+        == "CONTINUE_MONITORING"
+    )

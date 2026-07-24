@@ -46,11 +46,23 @@ def main() -> None:
 
     if not guard.should_run():
 
-        print(
-            "Outside monitoring window."
-        )
+        if guard.is_draw_day():
 
-        return
+            print(
+                "Outside active monitoring window."
+            )
+
+            print(
+                "Running draw-day recovery check."
+            )
+
+        else:
+
+            print(
+                "Outside monitoring window."
+            )
+
+            return
 
     start_time = perf_counter()
 

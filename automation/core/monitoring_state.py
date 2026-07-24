@@ -22,14 +22,28 @@ class MonitoringState:
         "automation/state/monitoring_state.json"
     )
 
+    def __init__(
+        self,
+        state_file: str | Path | None = None,
+    ) -> None:
+        """
+        Initialise monitoring state storage.
+        """
+
+        self.state_file = (
+            Path(state_file)
+            if state_file is not None
+            else self.STATE_FILE
+        )
+
     def load(self) -> dict:
         """
         Load the monitoring state.
         """
 
-        if not self.STATE_FILE.exists():
+        if not self.state_file.exists():
 
-            self.STATE_FILE.parent.mkdir(
+            self.state_file.parent.mkdir(
                 parents=True,
                 exist_ok=True,
             )
@@ -46,7 +60,7 @@ class MonitoringState:
                 }
             )
 
-        with self.STATE_FILE.open(
+        with self.state_file.open(
             "r",
             encoding="utf-8",
         ) as file:
@@ -61,7 +75,7 @@ class MonitoringState:
         Save the monitoring state.
         """
 
-        with self.STATE_FILE.open(
+        with self.state_file.open(
             "w",
             encoding="utf-8",
         ) as file:
