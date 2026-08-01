@@ -81,21 +81,13 @@ def main() -> None:
 
         monitoring_state = MonitoringState()
 
-        if hasattr(result, "validated_draw"):
-
-            if result.validated_draw is not None:
-
-                monitoring_state.reset_for_new_draw(
-                    result.validated_draw.draw_date,
-                )
-
-        if result.awaiting_final_source:
-
-            state = monitoring_state.load()
-
-            state["awaiting_final_source"] = True
-
-            monitoring_state.save(state)
+        if (
+            hasattr(result, "validated_draw")
+            and result.validated_draw is not None
+        ):
+            monitoring_state.reset_for_new_draw(
+                result.validated_draw.draw_date,
+            )
 
     except Exception as error:
 
