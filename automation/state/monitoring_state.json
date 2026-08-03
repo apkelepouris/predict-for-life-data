@@ -1,8 +1,8 @@
 {
-    "draw_date": null,
+    "draw_date": "2026-08-03",
     "awaiting_final_source": false,
     "pending_source": null,
-    "database_update_email_sent": false,
+    "database_update_email_sent": true,
     "third_source_warning_sent": false,
     "third_source_confirmation_sent": false,
     "validation_timeout_sent": false
