@@ -64,10 +64,15 @@ jobs:
         run: |
           python -m automation.main
 
+      # NEW
+      - name: Regenerate app JSON
+        run: |
+          python build_json.py
+
       - name: Check for persistent changes
         id: changes
         run: |
-          if git diff --quiet -- set_for_life.csv automation/state/monitoring_state.json; then
+          if git diff --quiet -- set_for_life.csv set_for_life_history.json automation/state/monitoring_state.json; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -82,7 +87,7 @@ jobs:
       - name: Commit persistent changes
         if: steps.changes.outputs.changed == 'true'
         run: |
-          git add set_for_life.csv automation/state/monitoring_state.json
+          git add set_for_life.csv set_for_life_history.json automation/state/monitoring_state.json
           git commit -m "Update Predict For Life monitoring state"
 
       - name: Push changes
